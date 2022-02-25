@@ -28,6 +28,7 @@ enum ServiceErrors: NetworkEngineError {
     case parseError
     case decodable
     case jsonParse
+    case jsonSerialization
     case noType
     case noSuccess(ServiceResponse)
     
@@ -52,6 +53,8 @@ enum ServiceErrors: NetworkEngineError {
             return ErrorDescription(code: status.description, string: "noSuccess", message: "Response is not success")
         case .noType:
             return ErrorDescription(code: .none, string: "noType", message: "Generic Type Not Defined")
+        case .jsonSerialization:
+            return ErrorDescription(code: .none, string: "jsonSerialization", message: "Could not serialize json object")
         }
     }
 }

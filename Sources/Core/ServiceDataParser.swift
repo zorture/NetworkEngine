@@ -29,6 +29,11 @@ public class ServiceDataParser<T> {
             } catch  {
                 return .failure(error)
             }
+        } else if T.self is JsonDictionary.Type {
+            guard let model = try? JSONSerialization.jsonObject(with: data, options: []) as? T else {
+                return .failure(ServiceErrors.jsonSerialization)
+            }
+            return .success(model)
         } else if T.self is String.Type {
             guard let string = String(data: data, encoding: .utf8) as?T else {
                 return .failure(ServiceErrors.noData)
