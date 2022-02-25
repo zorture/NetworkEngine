@@ -42,8 +42,8 @@ public class ServiceProcessor<T> {
         switch serviceResponse.error {
         case .none:
             return verifyResponse()
-        default:
-            return .failure(ServiceErrors.transportError)
+        case .some(let error):
+            return .failure(error)
         }
     }
     
@@ -54,7 +54,7 @@ public class ServiceProcessor<T> {
         case ServiceStatusCode.success:
             return verifyData()
         default:
-            return .failure(ServiceErrors.notSuccess(serviceResponse))
+            return .failure(ServiceErrors.noSuccess(serviceResponse))
         }
     }
     

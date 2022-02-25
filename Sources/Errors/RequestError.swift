@@ -22,19 +22,17 @@ enum RequestError: NetworkEngineError {
 }
 
 enum ServiceErrors: NetworkEngineError {
-    case transportError
     case noResponse
     case failureResponse
     case noData
     case parseError
     case decodable
     case jsonParse
-    case notSuccess(ServiceResponse)
+    case noType
+    case noSuccess(ServiceResponse)
     
     var errorModel: ErrorDescription {
         switch self {
-        case .transportError:
-            return ErrorDescription(code: .none, string: "transportError", message: "Please check the Connection or TSL")
         case .noResponse:
             return ErrorDescription(code: .none, string: "noResponse", message: "No Response")
         case .failureResponse:
@@ -47,11 +45,13 @@ enum ServiceErrors: NetworkEngineError {
             return ErrorDescription(code: .none, string: "decodable", message: "Could Not decode properly")
         case .jsonParse:
             return ErrorDescription(code: .none, string: "jsonParse", message: "Could Not parse json  decodable properly")
-        case .notSuccess(let serviceResponse):
+        case .noSuccess(let serviceResponse):
             guard let status = (serviceResponse.response as? HTTPURLResponse)?.statusCode else {
-                return ErrorDescription(code: .none, string: "notSuccess", message: "Response is not success")
+                return ErrorDescription(code: .none, string: "noSuccess", message: "Response is not success")
             }
-            return ErrorDescription(code: status.description, string: "notSuccess", message: "Response is not success")
+            return ErrorDescription(code: status.description, string: "noSuccess", message: "Response is not success")
+        case .noType:
+            return ErrorDescription(code: .none, string: "noType", message: "Generic Type Not Defined")
         }
     }
 }
