@@ -22,6 +22,12 @@ extension ServiceExecutor {
         startTask()
     }
     
+    func executeTask(urlRequest: URLRequest,
+                      completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        task = serviceSession.session.dataTask(with: urlRequest, completionHandler: completionHandler)
+        startTask()
+    }
+    
     func executeUploadTask(urlRequest: URLRequest,
                            fileURL: URL,
                      resultCompletion: @escaping TaskResultCompletion<T>) {

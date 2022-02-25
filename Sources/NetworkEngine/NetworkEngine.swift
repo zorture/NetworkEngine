@@ -26,6 +26,12 @@ public class NetworkEngine {
 public typealias TaskResultCompletion<T> = (Result<T, Error>) -> Void
 
 public extension NetworkEngine {
+    
+    class func executeRequest(urlRequest: URLRequest,
+                                 completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        ServiceExecutor<Data>().executeTask(urlRequest: urlRequest, completionHandler: completionHandler)
+    }
+    
     class func executeRequest<T>(urlRequest: URLRequest,
                                  type: T.Type,
                                  resultCompletion: @escaping TaskResultCompletion<T>) {

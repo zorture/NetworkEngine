@@ -41,7 +41,7 @@ public extension NetworkEngineRequest {
         }
         
         guard let url = component?.url else {
-            throw RequestError.invalidRequest
+            throw RequestError.invalidComponents
         }
         
         var request = URLRequest(url: url)

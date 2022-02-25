@@ -5,16 +5,18 @@
 //  Created by Kanwar Zorawar Singh Rana on 1/29/22.
 //
 
+import Foundation
+
 enum RequestError: NetworkEngineError {
     case invalidURL
-    case invalidRequest
+    case invalidComponents
     
     var errorModel: ErrorDescription {
         switch self {
         case .invalidURL:
             return ErrorDescription(code: .none, string: "invalidURL", message: "Please check the URL")
-        case .invalidRequest:
-            return ErrorDescription(code: .none, string: "invalidRequest", message: "Please check the request parameters")
+        case .invalidComponents:
+            return ErrorDescription(code: .none, string: "invalidComponents", message: "Please check the request parameters")
         }
     }
 }
@@ -27,6 +29,7 @@ enum ServiceErrors: NetworkEngineError {
     case parseError
     case decodable
     case jsonParse
+    case notSuccess(ServiceResponse)
     
     var errorModel: ErrorDescription {
         switch self {
@@ -44,6 +47,11 @@ enum ServiceErrors: NetworkEngineError {
             return ErrorDescription(code: .none, string: "decodable", message: "Could Not decode properly")
         case .jsonParse:
             return ErrorDescription(code: .none, string: "jsonParse", message: "Could Not parse json  decodable properly")
+        case .notSuccess(let serviceResponse):
+            guard let status = (serviceResponse.response as? HTTPURLResponse)?.statusCode else {
+                return ErrorDescription(code: .none, string: "notSuccess", message: "Response is not success")
+            }
+            return ErrorDescription(code: status.description, string: "notSuccess", message: "Response is not success")
         }
     }
 }

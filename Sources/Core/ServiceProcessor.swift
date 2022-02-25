@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ServiceResponse {
+public struct ServiceResponse {
     let data: Data?
     let response: URLResponse?
     let error: Error?
@@ -50,7 +50,7 @@ public class ServiceProcessor<T> {
         case ServiceStatusCode.success:
             return verifyData()
         default:
-            return .failure(ServiceErrors.noResponse)
+            return .failure(ServiceErrors.notSuccess(serviceResponse))
         }
     }
     
