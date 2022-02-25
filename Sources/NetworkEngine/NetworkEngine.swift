@@ -28,12 +28,12 @@ public typealias TaskResultCompletion<T> = (Result<T, Error>) -> Void
 public extension NetworkEngine {
     
     class func executeRequest(urlRequest: URLRequest,
-                                 completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+                              completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         ServiceExecutor<Data>().executeDataTask(urlRequest: urlRequest, completionHandler: completionHandler)
     }
     
     class func executeRequest(urlRequest: NetworkEngineRequest,
-                                 completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) throws {
+                              completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         do {
             let request =  try urlRequest.request()
             ServiceExecutor<Data>().executeDataTask(urlRequest: request, completionHandler: completionHandler)
@@ -61,13 +61,13 @@ public extension NetworkEngine {
     
     @available(iOS 15.0, *)
     class func executeRequest<T>(urlRequest: URLRequest,
-                                       type: T.Type) async throws -> T {
+                                 type: T.Type) async throws -> T {
         return try await ServiceExecutor<T>().executeDataTask(urlRequest: urlRequest)
     }
     
     @available(iOS 15.0, *)
     class func executeRequest<T>(urlRequest: NetworkEngineRequest,
-                                       type: T.Type) async throws -> T {
+                                 type: T.Type) async throws -> T {
         do {
             let request =  try urlRequest.request()
             return try await ServiceExecutor<T>().executeDataTask(urlRequest: request)
@@ -97,7 +97,7 @@ public extension NetworkEngine {
     }
     
     class func executeDownloadRequestInBackground<T>(urlRequest: URLRequest,
-                                                   type: T.Type) {
+                                                     type: T.Type) {
         ServiceExecutor<T>().executeDownloadTaskInBackground(urlRequest: urlRequest)
     }
     
