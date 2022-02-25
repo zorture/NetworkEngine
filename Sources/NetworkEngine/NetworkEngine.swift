@@ -29,13 +29,23 @@ public extension NetworkEngine {
     
     class func executeRequest(urlRequest: URLRequest,
                                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        ServiceExecutor<Data>().executeTask(urlRequest: urlRequest, completionHandler: completionHandler)
+        ServiceExecutor<Data>().executeDataTask(urlRequest: urlRequest, completionHandler: completionHandler)
+    }
+    
+    class func executeRequest(urlRequest: NetworkEngineRequest,
+                                 completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) throws {
+        do {
+            let request =  try urlRequest.request()
+            ServiceExecutor<Data>().executeDataTask(urlRequest: request, completionHandler: completionHandler)
+        } catch (let error) {
+            completionHandler(.none, .none, error)
+        }
     }
     
     class func executeRequest<T>(urlRequest: URLRequest,
                                  type: T.Type,
                                  resultCompletion: @escaping TaskResultCompletion<T>) {
-        ServiceExecutor<T>().executeTask(urlRequest: urlRequest, resultCompletion: resultCompletion)
+        ServiceExecutor<T>().executeDataTask(urlRequest: urlRequest, resultCompletion: resultCompletion)
     }
     
     class func executeRequest<T>(urlRequest: NetworkEngineRequest,
@@ -43,9 +53,26 @@ public extension NetworkEngine {
                                  resultCompletion: @escaping TaskResultCompletion<T>) {
         do {
             let request =  try urlRequest.request()
-            ServiceExecutor<T>().executeTask(urlRequest: request, resultCompletion: resultCompletion)
+            ServiceExecutor<T>().executeDataTask(urlRequest: request, resultCompletion: resultCompletion)
         } catch (let error) {
             resultCompletion(.failure(error))
+        }
+    }
+    
+    @available(iOS 15.0, *)
+    class func executeRequest<T>(urlRequest: URLRequest,
+                                       type: T.Type) async throws -> T {
+        return try await ServiceExecutor<T>().executeDataTask(urlRequest: urlRequest)
+    }
+    
+    @available(iOS 15.0, *)
+    class func executeRequest<T>(urlRequest: NetworkEngineRequest,
+                                       type: T.Type) async throws -> T {
+        do {
+            let request =  try urlRequest.request()
+            return try await ServiceExecutor<T>().executeDataTask(urlRequest: request)
+        } catch (let error) {
+            throw error
         }
     }
     

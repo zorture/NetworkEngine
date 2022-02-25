@@ -30,8 +30,12 @@ public class ServiceProcessor<T> {
         self.serviceResponse = serviceResponse
     }
     
-    func process(completion: @escaping TaskResultCompletion<T>) {
+    func process(completion: TaskResultCompletion<T>) {
         completion(verifyError())
+    }
+    
+    func process() -> Result<T, Error> {
+        return verifyError()
     }
     
     func verifyError() -> Result<T, Error> {
