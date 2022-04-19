@@ -20,8 +20,6 @@ struct ServiceStatusCode {
     static let serverError = 500...599
 }
 
-
-
 public class ServiceProcessor<T> {
     let serviceResponse: ServiceResponse
     

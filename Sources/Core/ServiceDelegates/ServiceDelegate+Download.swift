@@ -1,15 +1,13 @@
 //
-//  ServiceSessionDelegate.swift
-//  NetworkEngine
+//  ServiceDelegate+Download.swift
+//  
 //
-//  Created by Kanwar Zorawar Singh Rana on 12/2/21.
+//  Created by Kanwar Zorawar Singh Rana on 2/26/22.
 //
 
 import Foundation
 
-class ServiceSessionDelegate: NSObject, URLSessionDelegate, URLSessionDownloadDelegate {
-    var resumeData = Data()
-    
+extension ServiceDelegate: URLSessionDownloadDelegate {
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {}
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {

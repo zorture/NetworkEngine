@@ -10,7 +10,7 @@ import Foundation
 open class ServiceSession {
     public static let shared = ServiceSession()
     private let sessionQueue = OperationQueue()
-    let sessionDelegate = ServiceSessionDelegate()
+    let sessionDelegate = ServiceDelegate()
     
     lazy var backgroundSession: URLSession = {
         let config = URLSessionConfiguration.background(withIdentifier: "backgroundSession")

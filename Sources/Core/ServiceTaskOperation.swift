@@ -15,4 +15,8 @@ class ServiceTaskOperation: Operation {
         task.resume()
         super.init()
     }
+    
+    override func cancel() {
+        task.cancel()
+    }
 }
