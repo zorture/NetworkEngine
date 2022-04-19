@@ -12,7 +12,9 @@ extension ServiceExecutor {
     func executeUploadTask(urlRequest: URLRequest,
                            fileURL: URL,
                      resultCompletion: @escaping TaskResultCompletion<T>) {
-        task = serviceSession.session.uploadTask(with: urlRequest, fromFile: fileURL, completionHandler: { (data, response, error) in
+        task = serviceSession.session.uploadTask(with: urlRequest,
+                                                 fromFile: fileURL,
+                                                 completionHandler: { (data, response, error) in
             let response = ServiceResponse(data: data, response: response, error: error)
             ServiceProcessor<T>(response).process { (result) in
                 DispatchQueue.main.async {
@@ -26,8 +28,12 @@ extension ServiceExecutor {
     @available(iOS 15.0, *)
     func executeUploadTask(urlRequest: URLRequest,
                            fileURL: URL) async throws -> T {
-        let (data, response) = try await serviceSession.session.upload(for: urlRequest, fromFile: fileURL, delegate: .none)
-        let responseModel = ServiceResponse(data: data, response: response, error: .none)
+        let (data, response) = try await serviceSession.session.upload(for: urlRequest,
+                                                                       fromFile: fileURL,
+                                                                       delegate: ServiceSession.shared.sessionDelegate)
+        let responseModel = ServiceResponse(data: data,
+                                            response: response,
+                                            error: .none)
         let result = ServiceProcessor<T>(responseModel).process()
         switch result {
         case .success(let model):
@@ -39,8 +45,9 @@ extension ServiceExecutor {
     
     func executeUploadTaskInBackground(urlRequest: URLRequest,
                                        fileURL: URL) {
-        let task = serviceSession.backgroundSession.uploadTask(with: urlRequest, fromFile: fileURL)
-        task.resume()
+        task = serviceSession.backgroundSession.uploadTask(with: urlRequest,
+                                                           fromFile: fileURL)
+        startTask()
     }
 
 }

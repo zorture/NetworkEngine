@@ -10,13 +10,13 @@ import Foundation
 extension ServiceExecutor {
     
     func executeDownloadTaskInBackground(urlRequest: URLRequest) {
-        let task = serviceSession.backgroundSession.downloadTask(with: urlRequest.url!)
-        task.resume()
+        task = serviceSession.backgroundSession.downloadTask(with: urlRequest.url!)
+        startTask()
     }
     
     func executeResumeDownload(_ data: Data) {
-        let task = serviceSession.backgroundSession.downloadTask(withResumeData: data)
-        task.resume()
+        task = serviceSession.backgroundSession.downloadTask(withResumeData: data)
+        startTask()
     }
     
 }
